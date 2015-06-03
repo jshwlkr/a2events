@@ -1,0 +1,2 @@
+scrapy==0.24
+facebook-sdk
