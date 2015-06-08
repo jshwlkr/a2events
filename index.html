@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+    <link rel="stylesheet" href="css/clndr.css">
+</head>
+<body>
+
+    <div id="calendar"></div>
+
+    <script src= "js/jquery-2.1.4.min.js"></script>
+    <script src= "js/underscore-min.js"></script>
+    <script src= "js/moment.min.js"></script>
+    <script src= "js/clndr.min.js"></script>
+    <script src= "js/a2events.js"></script>
+    <script type="text/template" id="template">
+    <div class="clndr-controls">
+  <div class="clndr-previous-button">‹</div>
+  <div class="month"><%= month %></div>
+  <div class="clndr-next-button">›</div>
+</div>
+
+<% _.each(eventsThisMonth, function(event) { %>
+
+<div class="event-item ">
+<div class="event-item-name"><%= event.name %></div>
+<div class="event-item-date"><%= event.date %></div>
+<div class="event-item-location"><%= event.location %></div>
+</div>
+<% }); %>
+
+    </script>
+</body>
+</html>
