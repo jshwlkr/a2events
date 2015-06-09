@@ -42,7 +42,7 @@ def facebook_fetch(token):
                     pass
     except:
         pass
-    
+
     return event_list
 
 if __name__ == "__main__":
