@@ -37,12 +37,14 @@ def facebook_fetch(token):
                     for event in venue_events['data']:
                         try:
                             event_object = graph.get_object(event['id'])
-                            if 'timezone' in event:
-                                converted_time = str(dateutil.parser.parse(event['start_time'], ignoretz=True))
-                            else:
-                                converted_time = dateutil.parser.parse(event['start_time'])
-                                converted_time = str(converted_time.astimezone(pytz.timezone('US/Eastern')))
-                                print converted_time
+                            #if 'timezone' in event:
+                                #converted_time = str(dateutil.parser.parse(event['start_time'], ignoretz=True))
+                                #converted_time = event['start_time']
+                                #print "w/timezone ", converted_time
+                            #else:
+                            converted_time = dateutil.parser.parse(event['start_time'])
+                            converted_time = str(converted_time.astimezone(pytz.timezone('US/Eastern')))
+                            print "without timezone ", converted_time
 
                             if 'description' in event_object:
                                 event_list.append(
