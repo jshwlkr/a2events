@@ -1,0 +1,82 @@
+@import 'materialize';
+@import 'utilities';
+
+.loading {
+@extend .indigo, .darken-2;
+}
+
+.loaded {
+    background-color: white;
+}
+
+.preloader {
+    @extend .valign-wrapper, .indigo, .darken-2;
+    position: fixed;
+    top: 0;
+    z-index: 100;
+    min-height: 480px;
+    width: 100%;
+    height: 100%;
+    color: #e8eaf6;
+}
+
+.loading .preloader {
+    opacity: 1;
+    animation: animInitialHeader 1s cubic-bezier(0.7,0,0.3,1) both;
+}
+
+.loading .preloader {
+    animation-delay: 0.2s;
+}
+
+@keyframes animInitialHeader {
+    from {
+        opacity: 0;
+        transform: translate3d(0,800px,0);
+    }
+}
+
+.loaded .preloader{
+    animation: animLoadedLoader 0.5s cubic-bezier(0.7,0,0.3,1) forwards;
+}
+
+@keyframes animLoadedLoader {
+    to {
+        opacity: 0;
+        transform: translate3d(0,-100%,0) scale3d(0.3,0.3,1);
+    }
+}
+
+.loaded .content {
+    animation: animLoadedContent 1s cubic-bezier(0.7,0,0.3,1) both;
+}
+
+
+@keyframes animLoadedContent {
+    from {
+        opacity: 0;
+        transform: translate3d(0,200px,0);
+    }
+}
+
+.content {
+    @extend .blue;
+}
+
+.clndr-controls {
+    margin-bottom: 30px;
+}
+
+.mdi-navigation-chevron-right:before {
+  content: '\e89b';
+}
+
+.mdi-navigation-chevron-left:before {
+  content: '\e89a';
+}
+
+
+.clndr-next-button p,
+.clndr-previous-button p {
+  @extend %aria-text;
+}

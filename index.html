@@ -1,36 +1,22 @@
 <!doctype html>
-<html>
+<html ng-app="a2Events" lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-
-    <link rel="stylesheet" href="css/clndr.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ann Arbor Events</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js"></script>
+  <script src="js/main.js"></script>
 </head>
-<body>
+<body ng-controller="CalendarController">
 
-    <div id="calendar"></div>
+  <section ng-repeat="event in events">
+    <div>
+      {{ event.name }}
+    </div>
+    <div>
+      {{ event.date | date}}
+    </div>
+  </section>
 
-    <script src= "js/jquery-2.1.4.min.js"></script>
-    <script src= "js/underscore-min.js"></script>
-    <script src= "js/moment.min.js"></script>
-    <script src= "js/clndr.min.js"></script>
-    <script src= "js/a2events.js"></script>
-    <script type="text/template" id="template">
-    <div class="clndr-controls">
-  <div class="clndr-previous-button">‹</div>
-  <div class="month"><%= month %></div>
-  <div class="clndr-next-button">›</div>
-</div>
-
-<% _.each(eventsThisMonth, function(event) { %>
-
-<div class="event-item ">
-<div class="event-item-name"><%= event.name %></div>
-<div class="event-item-date"><%= event.date %></div>
-<div class="event-item-description"><%= event.description %></div>
-</div>
-<% }); %>
-
-    </script>
 </body>
 </html>

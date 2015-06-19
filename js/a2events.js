@@ -1,9 +1,12 @@
+
+
+
 $(document).ready( function() {
 
     $.ajaxSetup({ scriptCharset: "utf-8" , contentType: "application/json; charset=utf-8"});
     $.getJSON('data.json', function(json) {
 
-      $('#calendar').clndr({
+      $('.calendar').clndr({
         events: json,
         template: $('#template').html(),
 
@@ -16,7 +19,7 @@ $(document).ready( function() {
     }
   },
   doneRendering: function() {
-    console.log('this would be a fine place to attach custom event handlers.');
+    $('body').removeClass('loading').addClass('loaded');
   }
 });
 
