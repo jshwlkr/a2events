@@ -14,7 +14,9 @@
       {{ event.name }}
     </div>
     <div>
-      {{ event.date | date}}
+      {{ event.date | date: 'shortTime'}}
+      previous
+      {{ events[$index - 1].name}}
     </div>
   </section>
 
