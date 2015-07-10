@@ -1,0 +1,14 @@
+@import "bootstrap.min";
+
+.a2events {
+    @extend .container;
+
+}
+
+.year, .month, .event {
+    @extend .row;
+}
+
+.year div, .month div {
+    @extend .col-lg-12;
+}
