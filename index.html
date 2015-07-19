@@ -14,21 +14,34 @@
 <body ng-controller="CalendarController">
 
   <div class="a2events" ng-repeat="event in events">
-    <div class="year" ng-if="$first || event.year != events[$index - 1].year">
+    <h1 class="year" ng-if="$first || event.year != events[$index - 1].year">
       <div class="{{event.date | date: 'yyyy'}}">{{event.date | date: 'yyyy'}}</div>
-    </div>
-    <div class="month" ng-if="$first || event.month != events[$index - 1].month">
+    </h1>
+    <h2 class="month" ng-if="$first || event.month != events[$index - 1].month">
       <div class="{{event.date | date: 'MMMM'}}">{{event.date | date: 'MMMM'}}</div>
+    </h2>
+
+    <div class="event h-event">
+        <div class="day">
+      <p>{{event.date | date: 'd'}}</p>
     </div>
-    <div class="event">
-      <div class="event-title">
+      <h3 class="event-title p-name">
         {{ event.name }}
-      </div>
+      </h3>
       <div class="event-date">
-        {{ event.date | date: 'shortTime'}}
+        <time class="dt-start" datetime="{{ event.date | date: 'yyyy-MM-dd HH:mm'}}">
+          {{ event.date | date: 'shortTime'}}
+        </time>
       </div>
+          <div class="event-summary p-summary">
+      <p>
+        {{ event.description }}
+      </p>
+      <p ng-if="event.source == 'Facebook'">Find more information on <a href="{{event.url}}">{{event.source}}</a>.</p>
     </div>
   </div>
+    </div>
+
 
 </body>
 </html>

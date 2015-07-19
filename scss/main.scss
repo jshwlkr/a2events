@@ -2,13 +2,26 @@
 
 .a2events {
     @extend .container;
-
 }
 
 .year, .month, .event {
     @extend .row;
 }
 
-.year div, .month div {
-    @extend .col-lg-12;
+.year div, .month div, .event-title, .event-date, .event-summary {
+    @extend .col-lg-8;
 }
+
+.day {
+  @extend .col-lg-1;
+}
+
+.event-title, .event-date {
+
+}
+
+.event {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
