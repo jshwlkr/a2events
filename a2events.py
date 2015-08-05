@@ -1,13 +1,14 @@
-from dateutil import tz
-
 __author__ = 'Joshua Walker'
 
+from dateutil import tz
 import ConfigParser
 import json
-import datetime
 import dateutil.parser
 import pytz
 import facebook
+import git
+from git import Repo
+import shutil
 
 
 def main():
@@ -19,8 +20,8 @@ def main():
     event_list = facebook_fetch(token)
 
     event_list = sorted(event_list, key=lambda item: item['date'])
-    with open('data.json', 'w') as outfile:
-        json.dump(event_list, outfile)
+
+    to_github(event_list)
 
 
 def facebook_fetch(token):
@@ -37,14 +38,13 @@ def facebook_fetch(token):
                     for event in venue_events['data']:
                         try:
                             event_object = graph.get_object(event['id'])
-                            #if 'timezone' in event:
-                                #converted_time = str(dateutil.parser.parse(event['start_time'], ignoretz=True))
-                                #converted_time = event['start_time']
-                                #print "w/timezone ", converted_time
-                            #else:
+                            # if 'timezone' in event:
+                            # converted_time = str(dateutil.parser.parse(event['start_time'], ignoretz=True))
+                            # converted_time = event['start_time']
+                            # print "w/timezone ", converted_time
+                            # else:
                             converted_time = dateutil.parser.parse(event['start_time'])
                             converted_time = str(converted_time.astimezone(pytz.timezone('US/Eastern')))
-                            print "without timezone ", converted_time
 
                             if 'description' in event_object:
                                 event_list.append(
@@ -70,9 +70,20 @@ def facebook_fetch(token):
         print inst.args
         print inst
         pass
-    print event_list
+
     return event_list
 
+
+def to_github(event_list):
+    ghpages = Repo.clone_from('git@github.com:jshwlkr/a2events.git', '../temp_repo')
+    ghpages.git.checkout('gh-pages')
+    with open('../temp_repo/data.json', 'w') as outfile:
+        json.dump(event_list, outfile)
+
+    ghpages.git.add('data.json')
+    ghpages.index.commit('Event Update')
+    ghpages.git.push()
+    shutil.rmtree('../temp_repo')
 
 if __name__ == "__main__":
     main()

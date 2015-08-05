@@ -1,3 +1,4 @@
-scrapy==0.24
+pytz
 python-dateutil==2.4.2
 facebook-sdk
+gitpython
