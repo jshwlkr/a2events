@@ -3,7 +3,7 @@
   var app = angular.module('a2events', []);
 
   app.controller('CalendarController', function($scope, $http) {
-    $http.get('../data.json')
+    $http.get('data.json')
          .success(function(data, status, headers, config) {
           angular.forEach(data, function(value, key) {
             date = new Date(value['date']);

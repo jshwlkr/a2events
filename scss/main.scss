@@ -16,8 +16,8 @@
   @extend .col-lg-1;
 }
 
-.event-title, .event-date {
-
+.event-date, .event-summary{
+  @extend .col-lg-offset-1;
 }
 
 .event {
