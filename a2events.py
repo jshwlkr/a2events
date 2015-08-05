@@ -1,7 +1,6 @@
 __author__ = 'Joshua Walker'
 
 from dateutil import tz
-import ConfigParser
 import json
 import dateutil.parser
 import pytz
@@ -9,13 +8,18 @@ import facebook
 import git
 from git import Repo
 import shutil
+import os
 
 
 def main():
-    parser = ConfigParser.SafeConfigParser()
-    parser.read('config.ini')
-    secret = parser.get('facebook', 'secret')
-    app_id = parser.get('facebook', 'app_id')
+
+    #parser = ConfigParser.SafeConfigParser()
+    #parser.read('config.ini')
+    #secret = parser.get('facebook', 'secret')
+    #app_id = parser.get('facebook', 'app_id')
+
+    secret = os.environ['SECRET']
+    app_id = os.environ['APP_ID']
     token = facebook.get_app_access_token(app_id, secret)
     event_list = facebook_fetch(token)
 
