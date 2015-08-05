@@ -3,6 +3,7 @@ __author__ = 'Joshua Walker'
 from dateutil import tz
 import json
 import dateutil.parser
+from datetime import *
 import pytz
 import facebook
 import git
@@ -85,7 +86,8 @@ def to_github(event_list):
         json.dump(event_list, outfile)
 
     ghpages.git.add('data.json')
-    ghpages.index.commit('Event Update')
+    msg = "Event Update " + datetime.datetime.now()
+    ghpages.index.commit(msg)
     ghpages.git.push()
     shutil.rmtree('../temp_repo')
 
