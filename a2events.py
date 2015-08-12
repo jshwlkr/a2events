@@ -8,7 +8,6 @@ import pytz
 import facebook
 import git
 from git import Repo
-import shutil
 import os
 
 
@@ -48,8 +47,13 @@ def facebook_fetch(token):
                             # converted_time = event['start_time']
                             # print "w/timezone ", converted_time
                             # else:
+
                             converted_time = dateutil.parser.parse(event['start_time'])
-                            converted_time = str(converted_time.astimezone(pytz.timezone('US/Eastern')))
+
+                            if converted_time.time():
+                                converted_time = str(converted_time.astimezone(pytz.timezone('US/Eastern')))
+                            else:
+                                converted_time = str(converted_time)
 
                             if 'description' in event_object:
                                 event_list.append(
@@ -86,10 +90,9 @@ def to_github(event_list):
         json.dump(event_list, outfile)
 
     ghpages.git.add('data.json')
-    msg = "Event Update " + datetime.datetime.now()
+    msg = "Event Update " + str(datetime.now())
     ghpages.index.commit(msg)
     ghpages.git.push()
-    shutil.rmtree('../temp_repo')
 
 if __name__ == "__main__":
     main()
