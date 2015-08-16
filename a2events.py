@@ -20,12 +20,13 @@ def main():
 
     secret = os.environ['SECRET']
     app_id = os.environ['APP_ID']
+    github_token = os.environ['GITHUB_TOKEN']
     token = facebook.get_app_access_token(app_id, secret)
     event_list = facebook_fetch(token)
 
     event_list = sorted(event_list, key=lambda item: item['date'])
 
-    to_github(event_list)
+    to_github(event_list, github_token)
 
 def facebook_fetch(token):
     from_zone = tz.gettz('UTC')
@@ -81,8 +82,9 @@ def facebook_fetch(token):
     return event_list
 
 
-def to_github(event_list):
-    #ghpages = Repo.clone_from('https://github.com/jshwlkr/a2events.git', 'temp_repo')
+def to_github(event_list, github_token):
+    #ghpages = Repo.clone_from('https://github.com/jshwlkr/a2events.git')
+    os.system("curl -u jshwlkr:" + github_token + " https://api.github.com/user")
     os.system("git clone -v https://github.com/jshwlkr/a2events.git")
     ghpages = Repo("a2events")
     ghpages.git.checkout('gh-pages')
