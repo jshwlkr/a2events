@@ -85,7 +85,7 @@ def facebook_fetch(token):
 
 def to_github(event_list, github_user, github_pass):
     #ghpages = Repo.clone_from('https://github.com/jshwlkr/a2events.git')
-    os.system("git clone -v https://" + github_pass + ":" + github_user + "@github.com/jshwlkr/a2events.git")
+    os.system("git clone -v https://" + github_user + ":" + github_pass + "@github.com/jshwlkr/a2events.git")
     ghpages = Repo("a2events")
     ghpages.git.checkout('gh-pages')
     with open('a2events/data.json', 'w') as outfile:
