@@ -7,6 +7,11 @@
          .success(function(data, status, headers, config) {
           angular.forEach(data, function(value, key) {
             date = new Date(value['date']);
+            if (value['date'].length < 11) {
+              value['full_day'] = true;
+            } else {
+              value['full_day'] = false;
+            }
             value['date'] = date;
             value['year'] = date.getFullYear();
             value['month'] = date.getMonth();

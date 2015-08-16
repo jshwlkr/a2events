@@ -28,7 +28,7 @@
       <h3 class="event-title p-name">
         {{ event.name }}
       </h3>
-      <div class="event-date">
+      <div class="event-date" ng-if="!event.full_day">
         <time class="dt-start" datetime="{{ event.date | date: 'yyyy-MM-dd HH:mm'}}">
           {{ event.date | date: 'shortTime'}}
         </time>
