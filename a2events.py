@@ -52,8 +52,10 @@ def facebook_fetch(token):
                             if len(event['start_time']) < 11:
                                 converted_time = event['start_time']
                             else:
+                                print event['start_time']
                                 converted_time = dateutil.parser.parse(event['start_time'])
                                 converted_time = str(converted_time.astimezone(pytz.timezone('US/Eastern')))
+                                converted_time = converted_time.replace(" ", "T")
 
                             if 'description' in event_object:
                                 event_list.append(
