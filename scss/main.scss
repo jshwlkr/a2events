@@ -1,27 +1,190 @@
 @import "bootstrap.min";
+@import "variables";
 
-.a2events {
-    @extend .container;
+body {
+  background-color: $light;
+  color: $dark;
 }
 
-.year, .month, .event {
-    @extend .row;
+a {
+  color: $accent;
 }
 
-.year div, .month div, .event-title, .event-date, .event-summary {
-    @extend .col-lg-8;
+a:hover, a:active, a:focus {
+  color: $accent;
+  text-decoration:none;
 }
 
-.day {
-  @extend .col-lg-1;
+.animated {
+  position: relative;
 }
 
-.event-date, .event-summary{
-  @extend .col-lg-offset-1;
+.animated:before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  bottom: 0;
+  left: 0;
+  background-color: $accent;
+  visibility: hidden;
+  -webkit-transform: scaleX(0);
+  transform: scaleX(0);
+  -webkit-transition: all 0.3s ease-in-out 0s;
+  transition: all 0.3s ease-in-out 0s;
+}
+
+.animated:hover:before {
+  visibility: visible;
+  -webkit-transform: scaleX(1);
+  transform: scaleX(1);
+}
+
+.nav, .header, .event {
+  @extend .container;
+}
+
+.nav p, .background, .event-day, .event-title, .event-time, .event-summary {
+  @extend .row;
+}
+
+.event-day p, .event-time time {
+  @extend .col-xs-12;
+  margin-left: 2.5rem;
+}
+
+.nav {
+  margin-top: 25px;
+}
+
+.background {
+  background-image: url(img/dog.mobile.jpg);
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  margin-top: 15px;
+  min-height: 450px;
+}
+
+.month, .year, .nav p {
+  @extend .col-xs-12;
+  text-align: center;
+}
+
+.month, .year {
+  background-color: rgba(0,0,0,.8);
+}
+
+.month h1, .year span {
+  color: rgba(255,255,255,.8);
+}
+
+.month {
+  margin-top: 25px;
+  padding-bottom: 15px;
+}
+
+.month h1 {
+  @extend .heading-text;
+  font-size: 5rem;
+}
+
+@media (min-width: $sm) {
+  .background {
+   background-image: url(img/dog.jpg);
+
+  background-size: cover;
+  }
+
+  .month h1{
+    font-size: 10rem;
+  }
+
+  .event-title {
+    .glyphicon {
+      position: absolute !important;
+      left: 0;
+    }
+
+    .text {
+      padding-left: 2.5rem;
+      float: left;
+    }
+  }
+
+  .event-summary {
+    word-wrap: normal;
+  }
+}
+
+
+.year {
+  @extend .decoration-text;
+  font-size: 32px;
 }
 
 .event {
-  margin-top: 15px;
-  margin-bottom: 15px;
+  margin-top: 25px;
+  padding-bottom: 5px;
+  border-bottom: 3px solid;
+  border-color: $dark;
 }
 
+.event-day p {
+  margin: 0 0 0 2.5rem;
+  color: $mid;
+  font-weight: bold;
+}
+
+.event-title {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  @extend .col-xs-12;
+
+  a {
+    color: $dark;
+    font-weight: bold;
+
+    &:hover {
+      text-decoration:none;
+    }
+  }
+
+  .text {
+    padding-left: 2.5rem;
+    float: left;
+  }
+
+  .glyphicon {
+    position: absolute !important;
+    left: 1rem;
+  }
+}
+
+.event-time {
+  time {
+    color: $mid;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+}
+
+.event-summary {
+  @extend .col-xs-11;
+  color: $dark;
+  margin-left: 1rem;
+  word-wrap: break-word;
+}
+
+.collapse.am-collapse {
+  animation-duration: .3s;
+  animation-timing-function: ease;
+  animation-fill-mode: backwards;
+  overflow: hidden;
+  &.in {
+    animation-name: collapse;
+    display: block;
+  }
+
+}

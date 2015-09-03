@@ -1,6 +1,6 @@
 (function(){
 
-  var app = angular.module('a2events', []);
+  var app = angular.module('a2events', ['mgcrea.ngStrap', 'angular-inview']);
 
   app.controller('CalendarController', function($scope, $http) {
     $http.get('data.json')
@@ -18,10 +18,27 @@
             value['day'] = date.getDate();
           });
       $scope.events = data;
+      $scope.stickyYear = "";
+      $scope.stickyDay = "";
+
+      $scope.headingScroll = function(date){
+        //angular.element('.stick.heading div').textContent = year;
+        $scope.stickyYear = date;
+      }
+
+      $scope.dayScroll = function(){
+        $scope.stickyDay = ""
+      }
+
     })
     .error(function(data, status, headers, config) {
       console.log(status);
     });
   });
 
+
+
+
 })();
+
+
