@@ -142,8 +142,43 @@
     },
     {
       "name": "Melange Bistro",
-      "url": "https://www.facebook.com/melangebistro",
+      "url": "https://www.facebook.com/melangebistro/",
       "id": "235742315290"
+    },
+    {
+      "name": "The 3rd Death Star",
+      "url": "https://www.facebook.com/3rdDeathStar/",
+      "id": "406415066073224"
+    },
+    {
+      "name": "8 Ball Saloon",
+      "url": "https://www.facebook.com/8BallSaloon/",
+      "id": "162088147290496"
+    },
+    {
+      "name": "Ann Arbor Farmers Market",
+      "url": "https://www.facebook.com/a2market/",
+      "id": "199857670059224"
+    },
+    {
+      "name": "Washtenaw Food Hub",
+      "url": "https://www.facebook.com/washtenawfoodhub/",
+      "id": "334308556581596"
+    },
+    {
+      "name": "Aventura",
+      "url": "https://www.facebook.com/aventuraannarbor/",
+      "id": "287010314772216"
+    },
+    {
+      "name": "The City Of Ann Arbor",
+      "url": "https://www.facebook.com/TheCityOfAnnArbor/",
+      "id": "194936886811"
+    },
+    {
+      "name": "Matthaei Botanical Gardens and Nichols Arboretum",
+      "url": "https://www.facebook.com/mbgna/",
+      "id": "11017582539"
     }
   ]
 }
