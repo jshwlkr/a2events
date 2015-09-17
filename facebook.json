@@ -206,9 +206,24 @@
       "id": "881104971977746"
     },
     {
-      "name": "Anne Arbor Bicycle Club",
+      "name": "Ann Arbor Bicycle Club",
       "url": "https://www.facebook.com/groups/135737162276/",
       "id": "135737162276"
+    },
+    {
+      "name": "Zombie Walk A2",
+      "url": "https://www.facebook.com/ZombieWalkA2/",
+      "id": "260726953947080"
+    },
+    {
+      "name": "The Heidelberg",
+      "url": "https://www.facebook.com/HeidelbergAnnArbor/",
+      "id": "60075039054"
+    },
+    {
+      "name": "HopCat",
+      "url": "https://www.facebook.com/AnnArborHopCat/",
+      "id": "189988187874231"
     }
   ]
 }
