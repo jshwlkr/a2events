@@ -32,6 +32,7 @@ def main():
 def facebook_fetch(token):
     from_zone = tz.gettz('UTC')
     to_zone = tz.gettz('US/Eastern')
+    current_time = datetime.now(pytz.utc)
     try:
         graph = facebook.GraphAPI(access_token=token)
         with open('facebook.json') as data_file:
@@ -39,6 +40,9 @@ def facebook_fetch(token):
             event_list = []
             for each in data['venue']:
                 try:
+                    print "api"
+                    print each['id']
+                    print each['name']
                     venue_events = graph.get_connections(id=each['id'], connection_name='events')
                     for event in venue_events['data']:
                         try:
@@ -51,21 +55,24 @@ def facebook_fetch(token):
 
                             if len(event['start_time']) < 11:
                                 converted_time = event['start_time']
+                                comparison_time = dateutil.parser.parse(event['start_time'] + "T00:00:00-0500")
+                                comparison_time = comparison_time.astimezone(pytz.timezone('US/Eastern'))
                             else:
                                 print event['start_time']
                                 converted_time = dateutil.parser.parse(event['start_time'])
-                                converted_time = str(converted_time.astimezone(pytz.timezone('US/Eastern')))
+                                comparison_time = converted_time.astimezone(pytz.timezone('US/Eastern'))
+                                converted_time = str(comparison_time)
                                 converted_time = converted_time.replace(" ", "T")
-
-                            if 'description' in event_object:
-                                event_list.append(
-                                    dict(name=event['name'], url='https://www.facebook.com/events/' + event['id'] + '/',
-                                         date=converted_time, source='Facebook',
-                                         description=event_object['description']))
-                            else:
-                                event_list.append(
-                                    dict(name=event['name'], url='https://www.facebook.com/events/' + event['id'] + '/',
-                                         date=converted_time, source='Facebook'))
+                            if current_time < comparison_time :
+                                if 'description' in event_object:
+                                    event_list.append(
+                                        dict(name=event['name'], url='https://www.facebook.com/events/' + event['id'] + '/',
+                                             date=converted_time, source='Facebook',
+                                             description=event_object['description']))
+                                else:
+                                    event_list.append(
+                                        dict(name=event['name'], url='https://www.facebook.com/events/' + event['id'] + '/',
+                                                date=converted_time, source='Facebook'))
                         except Exception as inst:
                             print type(inst)
                             print inst.args
