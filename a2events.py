@@ -18,14 +18,28 @@ def main():
     #secret = parser.get('facebook', 'secret')
     #app_id = parser.get('facebook', 'app_id')
 
+    #facebook credentials
     secret = os.environ['SECRET']
     app_id = os.environ['APP_ID']
+
+    #github credentials
     github_pass = os.environ['GITHUB_PASS']
     github_user = os.environ['GITHUB_USER']
+
     token = facebook.get_app_access_token(app_id, secret)
     event_list = facebook_fetch(token)
 
     event_list = sorted(event_list, key=lambda item: item['date'])
+
+    seen = set()
+    new_l = []
+    for d in event_list:
+        t = tuple(d.items())
+        if t not in seen:
+            seen.add(t)
+            new_l.append(d)
+
+    event_list = new_l
 
     to_github(event_list, github_user, github_pass)
 
@@ -40,48 +54,75 @@ def facebook_fetch(token):
             event_list = []
             for each in data['venue']:
                 try:
-                    print "api"
-                    print each['id']
-                    print each['name']
                     venue_events = graph.get_connections(id=each['id'], connection_name='events')
                     for event in venue_events['data']:
                         try:
                             event_object = graph.get_object(event['id'])
+
                             # if 'timezone' in event:
                             # converted_time = str(dateutil.parser.parse(event['start_time'], ignoretz=True))
                             # converted_time = event['start_time']
                             # print "w/timezone ", converted_time
                             # else:
 
-                            if len(event['start_time']) < 11:
-                                converted_time = event['start_time']
-                                comparison_time = dateutil.parser.parse(event['start_time'] + "T00:00:00-0500")
-                                comparison_time = comparison_time.astimezone(pytz.timezone('US/Eastern'))
-                            else:
-                                print event['start_time']
-                                converted_time = dateutil.parser.parse(event['start_time'])
-                                comparison_time = converted_time.astimezone(pytz.timezone('US/Eastern'))
-                                converted_time = str(comparison_time)
-                                converted_time = converted_time.replace(" ", "T")
-                            if current_time < comparison_time :
-                                if 'description' in event_object:
-                                    event_list.append(
-                                        dict(name=event['name'], url='https://www.facebook.com/events/' + event['id'] + '/',
-                                             date=converted_time, source='Facebook',
-                                             description=event_object['description']))
+                            start_time = normalize_event(event['start_time'])
+                            if 'end_time' in event:
+                                end_time = normalize_event(event['end_time'])
+                                day_count = end_time['comparison'] - start_time['comparison']
+                                if day_count.days == 0:
+                                    day_count = 1
                                 else:
-                                    event_list.append(
-                                        dict(name=event['name'], url='https://www.facebook.com/events/' + event['id'] + '/',
-                                                date=converted_time, source='Facebook'))
+                                    day_count = day_count.days + 1
+                                for ii in range(0, day_count):
+                                    start_time = normalize_event(str(start_time['comparison'] + timedelta(days=ii)))
+                                    if current_time < start_time['comparison'] :
+                                        if 'description' in event_object:
+                                            event_list.append(
+                                                dict(name=event['name'], url='https://www.facebook.com/events/' + event['id'] + '/',
+                                                     date=start_time['converted'], source='Facebook',
+                                                     description=event_object['description']))
+                                        else:
+                                            event_list.append(
+                                                dict(name=event['name'], url='https://www.facebook.com/events/' + event['id'] + '/',
+                                                     date=start_time['converted'], source='Facebook'))
+
+                                # while end_time['comparison'] >= start_time['comparison']:
+                                #     print end_time['comparison'], start_time['comparison']
+                                #     print event_object
+                                #     if current_time < start_time['comparison'] :
+                                #         if 'description' in event_object:
+                                #             event_list.append(
+                                #                 dict(name=event['name'], url='https://www.facebook.com/events/' + event['id'] + '/',
+                                #                      date=start_time['converted'], source='Facebook',
+                                #                      description=event_object['description']))
+                                #         else:
+                                #             event_list.append(
+                                #                 dict(name=event['name'], url='https://www.facebook.com/events/' + event['id'] + '/',
+                                #                         date=start_time['converted'], source='Facebook'))
+                                #     start_time['comparison'] = start_time['comparison'] + timedelta(days=1)
+                            else:
+                                #if event has not past
+                                if current_time < start_time['comparison'] :
+                                    if 'description' in event_object:
+                                        event_list.append(
+                                            dict(name=event['name'], url='https://www.facebook.com/events/' + event['id'] + '/',
+                                                 date=start_time['converted'], source='Facebook',
+                                                 description=event_object['description']))
+                                    else:
+                                        event_list.append(
+                                            dict(name=event['name'], url='https://www.facebook.com/events/' + event['id'] + '/',
+                                                    date=start_time['converted'], source='Facebook'))
                         except Exception as inst:
                             print type(inst)
                             print inst.args
                             print inst
+                            print each
                             pass
                 except Exception as inst:
                     print type(inst)
                     print inst.args
                     print inst
+                    print each
                     pass
     except Exception as inst:
         print type(inst)
@@ -107,6 +148,19 @@ def to_github(event_list, github_user, github_pass):
     #os.system("git push ")
 
     ghpages.git.push()
+
+def normalize_event(event_time):
+    if len(event_time) < 11:
+        converted_time = event_time
+        comparison_time = dateutil.parser.parse(event_time + "T00:00:00-0500")
+        comparison_time = comparison_time.astimezone(pytz.timezone('US/Eastern'))
+    else:
+        converted_time = dateutil.parser.parse(event_time)
+        comparison_time = converted_time.astimezone(pytz.timezone('US/Eastern'))
+        converted_time = str(comparison_time)
+        converted_time = converted_time.replace(" ", "T")
+
+    return {'converted': converted_time, 'comparison': comparison_time}
 
 if __name__ == "__main__":
     main()
