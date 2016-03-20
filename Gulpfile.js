@@ -1,26 +1,36 @@
+
+
 var gulp = require('gulp');
 var sass = require('gulp-sass');
-var sourcemaps = require('gulp-sourcemaps');
 var autoprefixer = require('gulp-autoprefixer');
+var uncss = require('gulp-uncss');
+var merge = require('merge-stream');
 
 var input = './scss/**/*.scss';
 var output = './';
 var sassOptions = {
   errLogToConsole: true,
-  outputStyle: 'expanded'
+  outputStyle: 'expanded',
+  includePaths: 'node_modules/foundation-sites/scss'
 };
 var autoprefixerOptions = {
   browsers: ['last 2 versions', '> 5%', 'Firefox ESR']
 };
 
-gulp.task('sass', function () {
+gulp.task('sass', function() {
   return gulp
     .src(input)
-    .pipe(sourcemaps.init())
     .pipe(sass(sassOptions).on('error', sass.logError))
-    .pipe(sourcemaps.write())
     .pipe(autoprefixer(autoprefixerOptions))
     .pipe(gulp.dest(output));
+});
+
+gulp.task('perf', function() {
+    return gulp.src('main.css')
+        .pipe(uncss({
+            html: ['http://localhost:8000/']
+        }))
+        .pipe(gulp.dest('./'));
 });
 
 gulp.task('watch', function() {

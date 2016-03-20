@@ -1,67 +1,17 @@
 <!doctype html>
-<html ng-app="a2events" lang="en">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Ann Arbor Events</title>
 
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.1/angular.min.js"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-strap/2.3.1/angular-strap.min.js"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-strap/2.3.1/angular-strap.tpl.min.js"></script>
-  <script src="js/angular-inview.js"></script>
-
-
-  <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>-->
-  <script src="main.js"></script>
-  <link href='https://fonts.googleapis.com/css?family=Paytone+One' rel='stylesheet' type='text/css'>
-  <link href='https://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+  <link href="https://fonts.googleapis.com/css?family=Paytone+One" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic" rel="stylesheet" type="text/css">
   <link rel="stylesheet" type="text/css" href="main.css">
 </head>
-<body ng-controller="CalendarController">
-  <div class="nav">
-    <p>A listing of events culled from in and around the city of Ann Arbor.</p>
-  </div>
-  <div class="a2events" ng-repeat="event in events">
-
-<!--
-    <h1 class="year {{event.date | date: 'yyyy'}}" ng-if="$first || event.year != events[$index - 1].year">
-      <div class="{{event.date | date: 'yyyy'}}">{{event.date | date: 'yyyy'}}</div>
-    </h1>
-    <h2 class="month" ng-if="$first || event.month != events[$index - 1].month">
-      <div class="{{event.date | date: 'MMMM'}}">{{event.date | date: 'MMMM'}}</div>
-    </h2>
-  -->
-  <div class="header {{event.date | date: 'yyyy'}}" ng-if="$first || event.month != events[$index - 1].month">
-    <div class="background">
-      <div class="month"><h1>{{event.date | date: 'MMMM'}}</h1></div>
-      <div class="year"><span>{{event.date | date: 'yyyy'}}</span></div>
-    </div>
-  </div>
-
-
-  <div class="event h-event" bs-collapse data-start-collapsed="true">
-    <div class="event-day">
-      <p>{{event.date | date: 'dd, MMMM'}} &mdash; {{event.date | date: 'EEEE'}}</p>
-    </div>
-
-    <h3 class="event-title p-name">
-      <a href="" bs-collapse-toggle><span class="glyphicon glyphicon-collapse-down"></span><span class="text">{{ event.name }}</span></a>
-    </h3>
-    <div class="event-time" ng-if="!event.full_day">
-      <time class="dt-start" datetime="{{ event.date | date: 'yyyy-MM-dd HH:mm'}}">
-        {{ event.date | date: 'shortTime'}}
-      </time>
-    </div>
-    <div class="event-summary p-summary" bs-collapse-target>
-      <p>
-        {{ event.description }}
-      </p>
-      <p ng-if="event.source == 'Facebook'">Find more information on the <a class="animated" href="{{event.url}}">{{event.source}} listing</a>.</p>
-    </div>
-  </div>
-</div>
-
-
+<body>
+  <script crossorigin="anonymous" integrity="sha256-vjYzUmPKD/BcRJjQwG91Ly4K2Fii9jbOSmnr5R1y1EY=" src="https://cdn.jsdelivr.net/mithril/0.2.3/mithril.min.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>

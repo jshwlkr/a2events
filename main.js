@@ -1,44 +1,112 @@
-(function(){
+'use strict';
 
-  var app = angular.module('a2events', ['mgcrea.ngStrap', 'angular-inview']);
+(function() {
+  var app = {};
 
-  app.controller('CalendarController', function($scope, $http) {
-    $http.get('data.json')
-         .success(function(data, status, headers, config) {
-          angular.forEach(data, function(value, key) {
-            date = new Date(value['date']);
-            if (value['date'].length < 11) {
-              value['full_day'] = true;
-            } else {
-              value['full_day'] = false;
-            }
-            value['date'] = date;
-            value['year'] = date.getFullYear();
-            value['month'] = date.getMonth();
-            value['day'] = date.getDate();
-          });
-      $scope.events = data;
-      $scope.stickyYear = "";
-      $scope.stickyDay = "";
+  function AMPM(date) {
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+    return strTime;
+  }
 
-      $scope.headingScroll = function(date){
-        //angular.element('.stick.heading div').textContent = year;
-        $scope.stickyYear = date;
-      }
+  app.event = function(data) {
+    this.check = new Date();
+    /*
+    this.title = m.prop(data.name);
+    this.desc = m.prop(data.description);
+    this.url = m.prop(data.url);
+    this.source = m.prop(data.source);
+    this.year = function(input) {
+      var date = new Date(data.date);
+      if (input) return input.getFullYear();
+      return date.getFullYear();
+    };
+    this.month = function(input) {
+      var date = new Date(data.date);
+      if (input) return input.getMonth();
+      return date.getMonth();
+    };
+    this.day = function(input) {
+      var date = new Date(data.date);
+      if (input) return input.getDate();
+      return date.getDate();
+    };
+    this.monthflag = false;
+    this.yearflag = false;
+    */
+  };
 
-      $scope.dayScroll = function(){
-        $scope.stickyDay = ""
-      }
+  app.controller = function() {
+    // changed from this. to var so it's accessible inside the then function
+    var eventlist = m.prop([]);
 
-    })
-    .error(function(data, status, headers, config) {
-      console.log(status);
-    });
-  });
+    // load initial data
+    var init = function() {
+        m.request({method: 'GET', url: 'event-segment-1.json'}).
+            // assign the result to the getter/setter
+            then(eventlist).
+            // send the request for the rest of the data
+            then(rest)
+        ;
+    };
 
+    // load the rest of the data
+    var rest = function() {
+        m.request({method: 'GET', url: 'event-segment-2.json'}).
+            // concat the resulting array with the current one
+            then(function(result) {
+                eventlist(
+                    eventlist().concat(result)
+                );
+            })
+        ;
+    };
 
+    init();
 
+    // return the eventlist so the view can access it
+    return {
+        eventlist: eventlist
+    }
+};
 
+  app.view = function(controller) {
+    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+    return m('div', [
+      controller.eventlist().map(function(item) {
+        console.log(item);
+        var current = new Date(item.date);
+        var display_date = current.toTimeString() + ', ' + months[current.getMonth()] + ' — ' + days[current.getDay()];
+        var display_time = AMPM(current);
+        if (typeof controller.check === 'undefined' || controller.check.getMonth() != current.getMonth()) {
+          controller.check = new Date(current);
+          return [m('div', {class: 'month'}, [ m('h2', months[current.getMonth()])]),
+            m('div', {class: 'h-event'}, [
+            m('div', {class: 'dt-start'}, display_date),
+            m('a', {class: 'p-name', href: item.url}, item.name),
+            m('div', {class: 'time'}, display_time),
+            m('div', {class: 'p-description'}, item.description)
+          ])];
+        }
+        else {
+          controller.check = new Date(current);
+          return m('div', {class: 'h-event'}, [
+            m('div', {class: 'dt-start'}, display_date),
+            m('a', {class: 'p-name', href: item.url}, item.name),
+            m('div', {class: 'time'}, display_time),
+            m('div', {class: 'p-description'}, item.description)
+          ]);
+        }
+      })
+    ]);
+  };
+
+  m.module(document.body, app);
 })();
-
-
