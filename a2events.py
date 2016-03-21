@@ -134,18 +134,22 @@ def facebook_fetch(token):
 
 
 def to_github(event_list, github_user, github_pass):
-    #ghpages = Repo.clone_from('https://github.com/jshwlkr/a2events.git')
+    ##ghpages = Repo.clone_from('https://github.com/jshwlkr/a2events.git')
     os.system("git clone -v https://" + github_user + ":" + github_pass + "@github.com/jshwlkr/a2events.git")
     ghpages = Repo("a2events")
     ghpages.git.checkout('gh-pages')
-    with open('a2events/data.json', 'w') as outfile:
-        json.dump(event_list, outfile)
+    with open('a2events/event-segment-1.json', 'w') as outfile:
+        json.dump(event_list[:10], outfile)
+    del event_list[10]
+    with open('a2events/event-segment-2.json', 'w') as outfile:
+        json.dump(event_list[10:], outfile)
+    ghpages.git.add('event-segment-1.json')
+    ghpages.git.add('event-segment-2.json')
 
-    ghpages.git.add('data.json')
     msg = "Event Update " + str(datetime.now())
     ghpages.index.commit(msg)
-    #os.system("ls a2events")
-    #os.system("git push ")
+    ##os.system("ls a2events")
+    ##os.system("git push ")
 
     ghpages.git.push()
 
