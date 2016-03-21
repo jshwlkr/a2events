@@ -140,7 +140,6 @@ def to_github(event_list, github_user, github_pass):
     ghpages.git.checkout('gh-pages')
     with open('a2events/event-segment-1.json', 'w') as outfile:
         json.dump(event_list[:10], outfile)
-    del event_list[10]
     with open('a2events/event-segment-2.json', 'w') as outfile:
         json.dump(event_list[10:], outfile)
     ghpages.git.add('event-segment-1.json')
