@@ -83,7 +83,7 @@
       controller.eventlist().map(function(item) {
         console.log(item);
         var current = new Date(item.date);
-        var display_date = current.toTimeString() + ', ' + months[current.getMonth()] + ' — ' + days[current.getDay()];
+        var display_date = current.getDate() + ', ' + months[current.getMonth()] + ' — ' + days[current.getDay()];
         var display_time = AMPM(current);
         if (typeof controller.check === 'undefined' || controller.check.getMonth() != current.getMonth()) {
           controller.check = new Date(current);
