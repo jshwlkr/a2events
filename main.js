@@ -1,5 +1,6 @@
 /*global m document*/
-'use strict'(function() {
+"use strict";
+(function() {
   var app = {};
 
   function AMPM(date) {
