@@ -1,4 +1,4 @@
-
+/*global console require*/
 
 var gulp = require('gulp');
 var sass = require('gulp-sass');
@@ -9,12 +9,12 @@ var merge = require('merge-stream');
 var input = './scss/**/*.scss';
 var output = './';
 var sassOptions = {
-  errLogToConsole: true,
-  outputStyle: 'expanded',
-  includePaths: 'node_modules/foundation-sites/scss'
+errLogToConsole: true,
+outputStyle: 'expanded',
+includePaths: 'node_modules/foundation-sites/scss'
 };
 var autoprefixerOptions = {
-  browsers: ['last 2 versions', '> 5%', 'Firefox ESR']
+browsers: ['last 2 versions', '> 5%', 'Firefox ESR']
 };
 
 gulp.task('sass', function() {
@@ -26,13 +26,14 @@ gulp.task('sass', function() {
 });
 
 gulp.task('perf', function() {
-    return gulp.src('main.css')
-        .pipe(uncss({
-            html: ['http://localhost:8000/']
-        }))
-        .pipe(gulp.dest('./'));
+  return gulp.src('main.css')
+    .pipe(uncss({
+    html: ['http://localhost:8000/']
+    }))
+    .pipe(gulp.dest('./'));
 });
 
+/*eslint no-console: 0*/
 gulp.task('watch', function() {
   return gulp
     // Watch the input folder for change,
@@ -45,4 +46,4 @@ gulp.task('watch', function() {
     });
 });
 
-gulp.task('default', ['sass', 'watch' /*, possible other tasks... */]);
+gulp.task('default', ['sass', 'watch' /*, possible other tasks... */ ]);
