@@ -1,4 +1,5 @@
 pytz
-python-dateutil==2.4.2
+python-dateutil
 facebook-sdk
 gitpython
+python-oauth2
