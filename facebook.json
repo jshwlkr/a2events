@@ -486,11 +486,11 @@
       "id": "716233441817749"
     },
     {
-<<<<<<< HEAD
       "name": "Westside Art Hop",
       "url": "https://www.facebook.com/WestsideNeighborhoodArtHop/",
       "id": "444439085617242"
-=======
+    },
+    {
       "name": "Candy Bar",
       "url": "https://www.facebook.com/CandyBarLiveA2/",
       "id": "786871124674734"
@@ -504,7 +504,6 @@
       "name": "Theatre Nova",
       "url": "https://www.facebook.com/theatrenova/",
       "id": "249287888609111"
->>>>>>> 118217d888f5519dc4332558fdc6a6355d152ba5
     }
   ]
 }
