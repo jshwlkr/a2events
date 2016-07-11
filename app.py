@@ -34,29 +34,29 @@ def fetch_fb(secret, app_id):
     fb_list = []
     try:
         token = get_app_access_token(app_id, secret)
-    except Exception as inst:
+    except Exception as FacebookTokenError:
         pass
 
     try:
         graph = facebook.GraphAPI(access_token=token, version='2.3')
-    except Exception as inst:
+    except Exception as FacebokGraphError:
         pass
 
     try:
         with open('facebook.json') as data_file:
             data = json.load(data_file)
-    except Exception as inst:
+    except Exception FacebookLoadError:
         pass
 
     for each in data['venue']:
         try:
             venue_events = graph.get_connections(id=each['id'], connection_name='events')
-        except Exception as inst:
+        except Exception as FacebookConnectionError:
             pass
         for event in venue_events['data']:
             try:
                 event_object = graph.get_object(event['id'])
-            except Exception as inst:
+            except Exception as FacebookObjectError:
                 pass
 
             start_time = dateutil.parser.parse(event_object['start_time'])
@@ -84,7 +84,7 @@ def fetch_fb(secret, app_id):
 
 def append_event(event_object, fb_list, offset=0):
     start_time = dateutil.parser.parse(event_object['start_time']) + datetime.timedelta(days=offset)
-    start_time =str(start_time).replace(" ", "T")
+    start_time = str(start_time).replace(" ", "T")
     if 'description' in event_object:
         fb_list.append(
             dict(name=event_object['name'],
