@@ -38,7 +38,6 @@ def fetch_fb(secret, app_id):
             pass
         for event in venue_events['data']:
             event_object = graph.get_object(event['id'])
-            print(event_object)
             start_time = dateutil.parser.parse(event_object['start_time'])
             if 'end_time' in event and current_time < start_time:
                 end_time = dateutil.parser.parse(event_object['end_time'])
