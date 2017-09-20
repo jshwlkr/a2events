@@ -2,4 +2,3 @@ pytz
 python-dateutil
 facebook-sdk
 gitpython
-python-oauth2

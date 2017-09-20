@@ -1,19 +1,13 @@
-import urllib
-import urllib2
+import datetime
 import json
+import os
+import urllib.parse
+from datetime import datetime as dt
 
 import dateutil
+import facebook
 import pytz as pytz
 from dateutil import parser
-from dateutil import relativedelta
-
-import datetime
-from datetime import datetime as dt
-import facebook
-from git import Repo
-import os
-
-from datetime import date
 
 
 def main():
@@ -32,33 +26,19 @@ def main():
 def fetch_fb(secret, app_id):
     current_time = dt.now(pytz.utc)
     fb_list = []
-    try:
-        token = get_app_access_token(app_id, secret)
-    except Exception as FacebookTokenError:
-        pass
-
-    try:
-        graph = facebook.GraphAPI(access_token=token, version='2.3')
-    except Exception as FacebokGraphError:
-        pass
-
-    try:
-        with open('facebook.json') as data_file:
-            data = json.load(data_file)
-    except Exception FacebookLoadError:
-        pass
+    token = get_app_access_token(app_id, secret)
+    graph = facebook.GraphAPI(access_token=token, version='2.3')
+    with open('facebook.json') as data_file:
+        data = json.load(data_file)
 
     for each in data['venue']:
         try:
             venue_events = graph.get_connections(id=each['id'], connection_name='events')
-        except Exception as FacebookConnectionError:
+        except:
             pass
         for event in venue_events['data']:
-            try:
-                event_object = graph.get_object(event['id'])
-            except Exception as FacebookObjectError:
-                pass
-
+            event_object = graph.get_object(event['id'])
+            print(event_object)
             start_time = dateutil.parser.parse(event_object['start_time'])
             if 'end_time' in event and current_time < start_time:
                 end_time = dateutil.parser.parse(event_object['end_time'])
@@ -71,15 +51,18 @@ def fetch_fb(secret, app_id):
                         append_event(event_object, fb_list, ii)
 
 
-                #else:
+                else:
+                    append_event(event_object, fb_list)
                     #if there's an end time but no timezone?
-                    #doesn't seem to be happening
+                    #is happening
             elif current_time < start_time:
                 if 'timezone' in event:
                     append_event(event_object, fb_list)
-                #else:
+                else:
+                    append_event(event_object, fb_list)
                     #no timezone
-                    #also doesn't seem to be happening
+                    #is happening, need to add
+
     return fb_list
 
 def append_event(event_object, fb_list, offset=0):
@@ -125,7 +108,7 @@ def to_github(master_list, token):
     ghpages.git.add('event-segment-2.json')
 
     msg = "Event Update " + str(dt.now())
-    #ghpages.index.commit(msg)
+    ghpages.index.commit(msg)
     return
 
 
@@ -145,15 +128,13 @@ def get_app_access_token(app_id, app_secret):
             'client_id': app_id,
             'client_secret': app_secret}
 
-    file = urllib2.urlopen("https://graph.facebook.com/oauth/access_token?" +
-                           urllib.urlencode(args))
+    file = urllib.request.urlopen("https://graph.facebook.com/oauth/access_token?" +
+                   urllib.parse.urlencode(args))
 
-    try:
-        result = file.read().split("=")[1]
-    finally:
-        file.close()
-
-    return result
+    result = file.read()
+    result = json.loads(result)
+    file.close()
+    return result['access_token']
 
 
 if __name__ == "__main__":
