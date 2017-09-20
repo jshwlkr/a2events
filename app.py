@@ -12,10 +12,10 @@ from dateutil import parser
 
 def main():
     # facebook credentials
-    fb_secret = os.environ['FACEBOOKAPPSECRET']
-    fb_app_id = os.environ['FACEBOOKAPPID']
+    fb_secret = os.environ['SECRET']
+    fb_app_id = os.environ['APP_ID']
     # github credentials
-    gh_token = os.environ['GITHUBTOKEN']
+    gh_token = os.environ['GITHUB_TOKEN']
 
     master_list = fetch_fb(fb_secret, fb_app_id)
     master_list = clean_list(master_list)
